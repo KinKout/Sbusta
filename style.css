@@ -1,0 +1,181 @@
+:root {
+    --background: rgb(239, 242, 239);
+    --white: rgb(255, 255, 255);
+    --blackFont: rgb(18, 21, 14);
+    --submit: rgb(64, 75, 87);
+    --square: rgb(219, 226, 216);
+    --sahne: rgb(250, 251, 250);
+    --yellowSquare: rgb(246, 247, 204);
+}
+
+body {
+    background-color: var(--background);
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+header {
+    color: var(--blackFont);
+    font-weight: bold;
+    line-height: 0.5;
+
+    h1 {
+        padding: 20px 60px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        background-color: var(--white);
+        font-size: 25px;
+        text-align: left;
+    }
+}
+
+form {
+    padding: 5px;
+    color: var(--blackFont);
+    font-size: 15px;
+
+    label {
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
+    input {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid var(--blackFont);
+        width: 200px;
+        font-size: 15px;
+        color: var(--blackFont);
+        text-align: left;
+        background-color: var(--white);
+    }
+
+    select {
+        width: 210px;
+        height: 30px;
+        border: 1px solid var(--blackFont);
+        font-size: 15px;
+        color: var(--blackFont);
+        text-align: left;
+    }
+
+    button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 30px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: var(--blackFont);
+        color: var(--white);
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: var(--submit);
+    }
+
+    details {
+        display: block;
+        padding: 5px;
+        margin-top: 20px;
+        border-radius: 5px;
+        color: var(--blackFont);
+        background-color: var(--sahne);
+
+        summary {
+            cursor: pointer;
+        }
+    }
+}
+
+#avvisi-output {
+    min-height: 30px;
+    padding: 10px;
+    margin-top: 10px;
+    width: auto;
+    border-radius: 10px;
+    border: 2px solid var(--square);
+    background-color: var(--yellowSquare);
+    text-align: left;
+    font-size: 15px;
+    color: var(--blackFont);
+}
+
+section {
+    display: block;
+    padding: 20px;
+    margin-top: 30px;
+    margin-inline: auto;
+    border-radius: 10px;
+    max-width: 400px;
+    text-align: left;
+    font-weight: bold;
+    color: var(--blackFont);
+    background-color: var(--square);
+
+    span {
+        display: inline-block;
+        padding-right: 20px;
+        block-size: 50px;
+        width: 180px;
+        font-size: 22px;
+        text-align: right;
+    }
+
+    strong {
+        display: inline-block;
+        padding: 5px 30px 5px 10px;
+        width: 150px;
+        border-radius: 5px;
+        font-size: 25px;
+        background: var(--white);
+        text-align: right;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    th {
+        padding-right: 20px;
+        font-weight: initial;
+        text-align: right;
+    }
+
+    td {
+        padding: 5px 30px 5px 10px;
+        border-radius: 5px;
+        width: 150px;
+        font-size: 18px;
+        background: var(--white);
+        text-align: right;
+        font-weight: initial;
+    }
+
+    .result-dettagli {
+        font-weight: bold;
+    }
+
+    .space{
+        height: 20px;
+    }
+
+    .box-title {
+        text-align: center;
+        padding-bottom: 10px;
+        font-weight: bold;
+
+    }
+
+    #dettagli-imponibile {
+        background-color: var(--square);
+        text-align: left;
+    }
+
+    .tot {
+        font-weight: bold;
+    }
+}
+

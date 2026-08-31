@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sbusta - dal RAL al netto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<header>
+    <h1>Sbusta</h1>
+    <h2>dal RAL al netto</h2>
+    <h2>per ogni comune italiano</h2>
+    <h4>in Euro</h4>
+</header>
+
+<div>
+    <form id="data-input">
+
+        <div class="ral-input">
+            <label for="ral">STIPENDIO LORDO (RAL)</label>
+            <input type="number" id="ral" min="0" placeholder="0" step="1" required>
+        </div>
+
+        <div class="contratto-input">
+            <label for="contratto">TIPO di CONTRATTO</label>
+            <select id="contratto">
+                <option value="1" selected>Lavoro dipendente</option>
+                <option value="2">Apprendistato</option>
+            </select>
+        </div>
+
+        <div class="mensilita-input">
+            <label for="mensilita">MENSILITA'</label>
+            <select id="mensilita">
+                <option value="12">12 mesi</option>
+                <option value="13" selected>13 mesi</option>
+                <option value="14">14 mesi</option>
+                <option value="15">15 mesi</option>
+                <option value="16">16 mesi</option>
+            </select>
+        </div>
+
+        <div class="comune-input">
+            <label for="comune">COMUNE di RESIDENZA</label>
+            <input type="text" id="comune" list="comuni" placeholder="Sarmede" required>
+            <datalist id="comuni"></datalist>
+        </div>
+
+        <details class="optional-input">
+            <summary>Altri dati</summary>
+
+            <div class="coniuge-input">
+                <label for="coniuge">CONIUGE A CARICO</label>
+                <select id="coniuge">
+                    <option value="0" selected>Nessuno</option>
+                    <option value="1">Si</option>
+                </select>
+            </div>
+
+            <div class="figli-input">
+                <label for="figli">FIGLI A CARICO (21-29 anni)</label>
+                <select id="figli">
+                    <option value="0" selected>Nessuno</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+        </details>
+
+        <button type="submit">Calcola</button>
+    </form>
+</div>
+
+<div id="avvisi-output">
+    <div id="avvisi">avviso</div>
+</div>
+
+<div id="data-output">
+    <section id="summary-output">
+        <div class="summary-box">
+            <div class="netto-annuo">
+                <span>NETTO ANNUO</span>
+                <strong id="netto-annuo"> - </strong>
+            </div>
+            <div class="netto-mensile">
+                <span>AL MESE</span>
+                <strong id="netto-mensile"> - </strong>
+            </div>
+        </div>
+    </section>
+
+    <section id="dettagli-output">
+        <p class="box-title">Dettagli</p>
+        <table class="dettagli-table">
+            <tr>
+                <th>Stipendio lordo (RAL)</th>
+                <td id="v-stipendio-ral"> - </td>
+            </tr>
+            <tr>
+                <th>Contributi INPS</th>
+                <td id="v-inps"> - </td>
+            </tr>
+            <tr>
+                <th>Imponibile</th>
+                <td class="v-imponibile"> - </td>
+            </tr>
+            <tr>
+                <th>Imposte</th>
+                <td id="v-imposte"> - </td>
+            </tr>
+            <tr>
+                <th>integrazioni</th>
+                <td id="v-integrazioni"> - </td>
+            </tr>
+            <tr class="space"></tr>
+            <tr>
+                <th class="tot">Totale trattenute</th>
+                <td class="result-dettagli" id="v-totale-trattenute"> - </td>
+            </tr>
+            <tr>
+                <th class="tot">Netto Annuo</th>
+                <td class="result-dettagli" id="v-netto-annuo"> - </td>
+            </tr>
+            <tr>
+                <th class="tot">Netto mensile</th>
+                <td class="result-dettagli" id="v-netto-mensile"> - </td>
+            </tr>
+        </table>
+    </section>
+
+    <section id="dettagli-irpef-output">
+        <p class="box-title">Dettagli IRPEF</p>
+        <table class="dettagli-irpef-table">
+            <tr>
+                <th>IRPEF lordo</th>
+                <td id="v-irpef"> - </td>
+            </tr>
+            <tr>
+                <th>Lavoro dipendente</th>
+                <td id="v-dipendente"> - </td>
+            </tr>
+            <tr>
+                <th>Cuneo fiscale</th>
+                <td id="v-cuneo"> - </td>
+            </tr>
+            <tr>
+                <th>Coniuge a carico</th>
+                <td id="v-coniuge"> - </td>
+            </tr>
+            <tr>
+                <th>Figli a carico</th>
+                <td id="v-figli"> - </td>
+            </tr>
+            <tr class="space"></tr>
+            <tr>
+                <th class="tot">IRPEF netto</th>
+                <td class="result-dettagli" id="v-netto-irpef"> - </td>
+            </tr>
+        </table>
+    </section>
+
+    <section id="dettagli-addizionali-output">
+        <p class="box-title" id="titolo-addizionali">Addizionali locali</p>
+        <table class="dettagli-addizionali-table">
+            <tr>
+                <th>Da imponibile pari a</th>
+                <td class="v-imponibile" id="dettagli-imponibile"> - </td>
+            </tr>
+            <tr>
+                <th>Addizionale regionale</th>
+                <td id="v-regionale"> - </td>
+            </tr>
+            <tr>
+                <th>Addizionale comunale</th>
+                <td id="v-comunale"> - </td>
+            </tr>
+            <tr class="space"></tr>
+            <tr>
+                <th class="tot">TOT. ADDIZIONALI</th>
+                <td class="result-dettagli" id="v-totale-addizionali"> - </td>
+            </tr>
+        </table>
+    </section>
+
+    <section id="dettagli-integrazioni-output">
+        <p class="box-title">Integrazioni</p>
+        <table class="dettagli-integrazioni-table">
+            <tr>
+                <th>Somma esente</th>
+                <td id="v-esente"> - </td>
+            </tr>
+            <tr>
+                <th>Trattamento integrativo</th>
+                <td id="v-integrativo"> - </td>
+            </tr>
+            <tr>
+                <th class="tot">TOT. INTEGRAZIONI</th>
+                <td class="result-dettagli" id="v-totale-integrazioni"> - </td>
+            </tr>
+        </table>
+    </section>
+</div>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>

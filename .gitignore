@@ -1,0 +1,17 @@
+# ---------- DIRECTORIES
+
+.idea/
+design/
+
+# ---------- FILES
+
+TODO.txt
+
+# ---------- CODE
+
+
+# ---------- HIDDEN FILES
+
+.DS_Store
+Thumbs.db
+desktop.ini
