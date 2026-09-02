@@ -2,7 +2,7 @@
 
 Dal RAL al netto, per ogni comune italiano.
 
-**[Provalo qui](https://kinkout.github.io/Sbusta/)**
+link al sito **[https://kinkout.github.io/Sbusta/](https://kinkout.github.io/Sbusta/)**
 
 Calcola lo stipendio netto a partire dalla retribuzione annua lorda, applicando
 IRPEF, detrazioni e le addizionali comunali e regionali del comune di residenza.
