@@ -12,6 +12,7 @@
     <h1>Sbusta</h1>
     <h2>dal RAL al netto</h2>
     <h2>per ogni comune italiano</h2>
+    <h2>anno <span id="anno"></span></h2>
     <h4>in Euro</h4>
 </header>
 
@@ -20,15 +21,12 @@
 
         <div class="ral-input">
             <label for="ral">STIPENDIO LORDO (RAL)</label>
-            <input type="number" id="ral" min="0" placeholder="0" step="1" required>
+            <input type="number" id="ral" min="1" placeholder="0" step="1" required>
         </div>
 
         <div class="contratto-input">
             <label for="contratto">TIPO di CONTRATTO</label>
-            <select id="contratto">
-                <option value="1" selected>Lavoro dipendente</option>
-                <option value="2">Apprendistato</option>
-            </select>
+            <select id="contratto"></select>
         </div>
 
         <div class="mensilita-input">
@@ -50,15 +48,6 @@
 
         <details class="optional-input">
             <summary>Altri dati</summary>
-
-            <div class="coniuge-input">
-                <label for="coniuge">CONIUGE A CARICO</label>
-                <select id="coniuge">
-                    <option value="0" selected>Nessuno</option>
-                    <option value="1">Si</option>
-                </select>
-            </div>
-
             <div class="figli-input">
                 <label for="figli">FIGLI A CARICO (21-29 anni)</label>
                 <select id="figli">
@@ -72,12 +61,13 @@
             </div>
         </details>
 
-        <button type="submit">Calcola</button>
+        <button type="submit" id="calcola" disabled>Caricamento dati...</button>
     </form>
 </div>
 
 <div id="avvisi-output">
-    <div id="avvisi">avviso</div>
+    <div id="note">- Il risultato è un valore approssimativo -</div>
+    <div id="avvisi"></div>
 </div>
 
 <div id="data-output">
@@ -110,8 +100,12 @@
                 <td class="v-imponibile"> - </td>
             </tr>
             <tr>
-                <th>Imposte</th>
-                <td id="v-imposte"> - </td>
+                <th>IRPEF</th>
+                <td id="d-irpef"> - </td>
+            </tr>
+            <tr>
+                <th>Addizionali</th>
+                <td id="d-totale-addizionali"> - </td>
             </tr>
             <tr>
                 <th>integrazioni</th>
@@ -147,10 +141,6 @@
             <tr>
                 <th>Cuneo fiscale</th>
                 <td id="v-cuneo"> - </td>
-            </tr>
-            <tr>
-                <th>Coniuge a carico</th>
-                <td id="v-coniuge"> - </td>
             </tr>
             <tr>
                 <th>Figli a carico</th>

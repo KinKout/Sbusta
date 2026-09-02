@@ -1,0 +1,106 @@
+{
+  "anno": 2026,
+  "aggiornato": "2026-09-01",
+
+  "inps": {
+    "_fonte": "Circolare INPS n. 6 del 30/01/2026",
+    "_url": "https://www.inps.it/it/it/inps-comunica/notizie/dettaglio-news-page.news.2026.02.lavoratori-dipendenti-limite-minimo-di-retribuzione-giornaliera-2026.html",
+    "_come_funziona": "Si calcolano sulla RAL e riducono anche la base IRPEF, perche' i contributi obbligatori non fanno reddito (art. 51 TUIR). Oltre la prima fascia di stipendio scatta l'1% aggiuntivo, oltre il massimale non si versa piu' nulla. (assumendo iscrizione a forme pensionistiche obbligatorie successiva al 31/12/1995, o opzione per il sistema contributivo, ipotesi valida per la generalità dei lavoratori attuali). Stima: l'1% e' applicato qui su base annua, mentre la circolare prevede il criterio della mensilizzazione (4.685 euro al mese).",
+    "_implementazione": "La base e' la RAL tagliata al massimale. Su quella si applica 'contratti[chiave].aliquota'. Sulla parte di base che eccede la prima fascia si applica in piu' l'aliquota aggiuntiva, solo se il contratto scelto ha 'aliquota_aggiuntiva' a true. Le chiavi di 'contratti' sono i value del select nella pagina, quindi il valore del campo si usa direttamente come chiave. Il nome visualizzato nel select si legge da 'contratti[chiave].nome'. Aggiungere un contratto qui basta a farlo comparire nel select e nel calcolo.",
+
+    "contratti": {
+      "1": {
+        "nome": "Lavoro dipendente",
+        "aliquota": 0.0919,
+        "aliquota_aggiuntiva": true
+      },
+      "2": {
+        "nome": "Apprendistato",
+        "aliquota": 0.0584,
+        "aliquota_aggiuntiva": false
+      }
+    },
+
+    "prima_fascia": 56224,
+    "aliquota_aggiuntiva": 0.01,
+    "massimale": 122295
+  },
+
+  "irpef": {
+    "_fonte": "Art. 11 TUIR, modificato dalla L. 199/2025 (seconda aliquota dal 35% al 33%)",
+    "_url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.del.presidente.della.repubblica:1986-12-22;917~art11!vig=2026-01-01",
+    "_come_funziona": "Progressiva: ogni aliquota colpisce solo la quota di reddito nel suo scaglione, mai l'intero importo.",
+    "_implementazione": "Si scorrono gli scaglioni dal basso. Per ognuno si tassa la parte di imponibile compresa tra il tetto precedente e il proprio, e si somma. Un 'fino' a null significa senza limite superiore.",
+    "scaglioni": [
+      { "fino": 28000, "aliquota": 0.23 },
+      { "fino": 50000, "aliquota": 0.33 },
+      { "fino": null,  "aliquota": 0.43 }
+    ]
+  },
+
+  "detrazione_lavoro": {
+    "_fonte": "Art. 13 commi 1 e 1.1 TUIR",
+    "_url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.del.presidente.della.repubblica:1986-12-22;917~art13!vig=2026-01-01",
+    "_come_funziona": "Riduce l'imposta, non il reddito. I 1.955 euro creano la no tax area a 8.500, perche' 8.500 al 23% fanno esattamente 1.955. La norma prevede anche un minimo garantito di 690 euro (1.380 per il tempo determinato) quando la detrazione e' ridotta in proporzione ai giorni lavorati nell'anno: qui non serve, perche' si assume sempre l'anno intero.",
+    "_implementazione": "Si prende la prima fascia il cui 'fino' e' maggiore o uguale al reddito. La detrazione vale la base piu' la parte decrescente, cioe' quota per (riferimento meno reddito) diviso divisore. Le fasce senza parte decrescente hanno divisore zero e valgono la sola base, cosi' si evita la divisione per zero. Se il reddito cade nell'intervallo della maggiorazione, si somma l'importo dopo.",
+    "fasce": [
+      { "fino": 15000, "base": 1955, "quota": 0,    "riferimento": 0,     "divisore": 0 },
+      { "fino": 28000, "base": 1910, "quota": 1190, "riferimento": 28000, "divisore": 13000 },
+      { "fino": 50000, "base": 0,    "quota": 1910, "riferimento": 50000, "divisore": 22000 },
+      { "fino": null,  "base": 0,    "quota": 0,    "riferimento": 0,     "divisore": 0 }
+    ],
+    "maggiorazione": { "oltre": 25000, "fino": 35000, "importo": 65 }
+  },
+
+  "detrazione_figli": {
+    "_fonte": "Art. 12 comma 1 lettera c) TUIR, modificato dalla L. 207/2024",
+    "_url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.del.presidente.della.repubblica:1986-12-22;917~art12!vig=2026-01-01",
+    "_come_funziona": "Solo per figli dai 21 ai 29 anni a carico. Sotto i 21 c'e' l'assegno unico, che non passa dalla busta paga. Dai 30 in su e' abolita.",
+    "_implementazione": "Prima si calcola la soglia effettiva: 'soglia' piu' 'incremento_per_figlio' per ogni figlio oltre il primo. Poi la detrazione di un singolo figlio: 'base' per (soglia effettiva meno reddito) diviso soglia effettiva. Infine si moltiplica per il numero di figli. La soglia cresce col numero dei figli e compare due volte nella formula, quindi piu' figli si hanno e piu' alta e' la detrazione di ciascuno.",
+    "base": 950,
+    "soglia": 95000,
+    "incremento_per_figlio": 15000,
+    "eta_minima": 21,
+    "eta_massima_compresa": 29
+  },
+
+  "cuneo_somma_esente": {
+    "_fonte": "L. 207/2024 commi 4-5, circolare Agenzia delle Entrate 4/E del 16/05/2025",
+    "_url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2024-12-30;207~art1",
+    "_come_funziona": "Il 'taglio del cuneo' e' il bonus in busta paga per i redditi medio-bassi. Questa e' la sua prima forma, per i redditi fino a 20.000 euro. Non e' una detrazione: si aggiunge al netto e non fa reddito. Alternativa alla detrazione del cuneo, mai cumulabile.",
+    "_implementazione": "Se il reddito supera 'limite' non spetta. Altrimenti si prende la prima fascia utile e si applica la percentuale all'intero reddito, non alla sola quota che ricade nella fascia. Il risultato si somma al netto, non si sottrae dall'imposta.",
+    "limite": 20000,
+    "fasce": [
+      { "fino": 8500,  "percentuale": 0.071 },
+      { "fino": 15000, "percentuale": 0.053 },
+      { "fino": 20000, "percentuale": 0.048 }
+    ]
+  },
+
+  "cuneo_detrazione": {
+    "_fonte": "L. 207/2024 commi 6-9",
+    "_url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2024-12-30;207~art1",
+    "_come_funziona": "Sopra i 20.000 la somma esente lascia il posto a una detrazione vera. Piena fino a 32.000, poi decresce fino ad azzerarsi a 40.000.",
+    "_implementazione": "Se il reddito cade nell'intervallo 'piena' spetta l'importo intero. Se cade in 'decrescente' spetta l'importo ridotto in proporzione, cioe' per (riferimento meno reddito) diviso divisore. Fuori da entrambi non spetta. Si somma alle altre detrazioni prima di applicare il limite di capienza (cioe' senza mai scendere sotto zero: una detrazione piu' grande dell'imposta non genera rimborsi).",
+    "piena": { "oltre": 20000, "fino": 32000, "importo": 1000 },
+    "decrescente": { "oltre": 32000, "fino": 40000, "importo": 1000, "riferimento": 40000, "divisore": 8000 }
+  },
+
+  "trattamento_integrativo": {
+    "_fonte": "D.L. 3/2020 art. 1, modificato dal D.Lgs. 216/2023",
+    "_url": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legge:2020-02-05;3~art1",
+    "_come_funziona": "Distinto dal cuneo. Come la somma esente si aggiunge al netto. Serve a compensare l'incapienza, cioe' quando le detrazioni superano l'imposta e l'eccedenza andrebbe persa.",
+    "_implementazione": "Sotto 'soglia_piena' spetta l'importo intero, ma solo se l'imposta lorda supera la detrazione da lavoro dipendente. Fino a 'soglia_incapienza' spetta solo la differenza tra detrazioni e imposta lorda, e comunque non piu' di 'importo'. Sopra non spetta.",
+    "importo": 1200,
+    "soglia_piena": 15000,
+    "soglia_incapienza": 28000
+  },
+
+  "addizionali": {
+    "_fonte": "Art. 50 comma 2 D.Lgs. 446/1997 per la condizione di dovutezza. Aliquote dai CSV del Dipartimento delle Finanze.",
+    "_url": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/tabella.htm",
+    "_url_regioni": "https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/addregirpef/download/tabella.htm",
+    "_come_funziona": "Dovute al comune di domicilio fiscale, che per un dipendente coincide con la residenza. Non sono dovute se l'IRPEF netta e' zero.",
+    "_implementazione": "Si calcolano sull'imponibile, non sulla RAL e non su cio' che resta dopo l'IRPEF: sono parallele all'IRPEF, non in cascata. Prima va verificato che l'IRPEF netta sia maggiore di zero, altrimenti valgono entrambe zero. La soglia di esenzione comunale e' un interruttore e non una franchigia: se l'imponibile la supera si paga sull'intero importo. Aliquote e soglie stanno nei CSV."
+  }
+}

@@ -101,7 +101,16 @@ form {
     text-align: left;
     font-size: 15px;
     color: var(--blackFont);
+
+    #note {
+        text-align: center;
+        color: red;
+        text-shadow: 1px 1px 1px darkgoldenrod;
+    }
 }
+
+
+
 
 section {
     display: block;
